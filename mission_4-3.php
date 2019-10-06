@@ -1,8 +1,8 @@
 ﻿<?php
 	//データベース接続
-	$dname = 'mysql:dbname=tb210407db;host=localhost';
-	$user = 'tb-210407';
-	$password = 'ZnMkmJhwU7';
+	$dname = 'データベース名';
+	$user = 'ユーザ名';
+	$password = 'パスワード';
 	$pdo = new PDO($dname,$user,$password,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 	
 	$sql = 'SHOW TABLES';
