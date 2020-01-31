@@ -1,9 +1,9 @@
 <?php
 
 	//データベース接続
-	$dsn = 'データベース名';
-	$user = 'ユーザ名';
-	$password = 'パスワード';
+	$dsn = 'mysql:dbname=tb210407db;host=localhost';
+	$user = 'tb-210407';
+	$password = 'ZnMkmJhwU7';
 	$pdo = new PDO($dsn,$user,$password,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 
 	//テーブルの作成
@@ -18,7 +18,7 @@
 	$stmt = $pdo->query($sql);
 
 	//投稿フォーム
-	if(!empty($_POST["name"]) && !empty($_POST["comment"])) {	//「名前」と「コメント」の入力判定
+	if(!empty($_POST["name"]) && !empty($_POST["comment"]) && !empty($_POST["password"])) {	//「名前」と「コメント」と「パスワード」の入力判定
 			if(empty($_POST["editing_No"])) {	//新規投稿判定
 
 					//変数の宣言
@@ -37,9 +37,9 @@
 
 					$sql -> execute();	//実行
 
-			}else if(!empty($_POST["editingNo"])) {	//既存投稿判定
+			}else if(!empty($_POST["editing_No"])) {	//既存投稿判定
 
-					$id = $_POST["editingNo"]; //編集する投稿番号
+					$id = $_POST["editing_No"]; //編集する投稿番号
 					$name = $_POST["name"];
 					$comment = $_POST["comment"];
 					$date = date("Y/m/d H:i:s");
@@ -58,11 +58,11 @@
 			}
 
 	//削除フォーム
-	}else if(!empty($_POST["deleteNo"])) {	//入力された削除番号が空でない場合
+}else if(!empty($_POST["delete_No"])) {	//入力された削除番号が空でない場合
 					if(!empty($_POST["delete_pass"])) {	//入力されたパスワードが空でない場合
 
 						//削除番号とパスワードを変数に代入
-						$id = $_POST["deleteNo"];
+						$id = $_POST["delete_No"];
 						$password = $_POST["delete_pass"];
 
 						//削除処理
@@ -77,11 +77,11 @@
 						}
 
 	//編集フォーム
-	}else if(!empty($_POST["editNo"])) {		//入力された編集番号が空でない場合
+}else if(!empty($_POST["edit_No"])) {		//入力された編集番号が空でない場合
 					if(!empty($_POST["edit_pass"])) {		//入力されたパスワードが空でない場合
 
 						//編集番号とパスワードを変数に代入
-						$id = $_POST["editNo"];
+						$id = $_POST["edit_No"];
 						$password = $_POST["edit_pass"];
 
 						//編集目的の「名前」と「コメント」を表示する処理
@@ -138,7 +138,7 @@
 				<input type="text" name="comment" value="<?php if(!empty($editing_comment)) { echo $editing_comment; } ?>"></br>	<!-- valueの中身は、編集したいコメントを表示するためのもの -->
 				<input type="hidden" name="editing_No" value = "<?php if(!empty($_POST["edit_No"])) { echo $_POST["edit_No"]; } ?>"> <!-- 編集番号を保持するための箱「hidden」はテキストボックスを画面上に隠して用意するもの -->
 				<label>パスワード：</label>
-				<input type="text" name="password">
+				<input type="password" name="password">
 				<input type="submit" name="submit_send" value="送信">
 				<br/>
 				<br/>
@@ -147,7 +147,7 @@
 				<label>削除番号　：</label>
 				<input type="text" name="delete_No" ></br>
 				<label>パスワード：</label>
-				<input type="text" name="delete_pass">
+				<input type="password" name="delete_pass">
 				<input type="submit" name="submit_delete" value="削除">
 				<br/>
 				<br/>
@@ -156,14 +156,14 @@
 				<label>編集番号　：</label>
 				<input type="text" name="edit_No"></br>
 				<label>パスワード：</label>
-				<input type="text" name="edit_pass">
+				<input type="password" name="edit_pass">
 				<input type="submit" name="submit_edit" value="編集">
 				<br/>
 				<br/>
 				<!-- テーブル内初期化 -->
 				<p><label>【初期化フォーム】</label></p>
 				<label>パスワード：</label>
-				<input type="text" name="clear">
+				<input type="password" name="clear">
 				<input type="submit" name="submit_trun" value="初期化"></br>
 				<br/>
 				<label>初期化パスワード➡「082」</label>
